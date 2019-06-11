@@ -16,6 +16,7 @@ export default {
 </script>
 
 <style>
+@import "https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css";
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
