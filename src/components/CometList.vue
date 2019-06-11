@@ -73,8 +73,8 @@
             </div>
 
             <div class="column is-narrow">
-                <button @click.prevent="excludeCourse" class="button is-primary is-link" style="margin: 0 .5rem 0 0;"><b-icon icon="chevron-left"></b-icon></button>
-                <button @click.prevent="includeCourse" class="button is-primary is-link" style="margin: 0 0 1rem 0;"><b-icon icon="chevron-right"></b-icon></button><br/>
+                <button :disabled="!checkedIncludedCometCourses.length" @click.prevent="excludeCourse" class="button is-primary is-link" style="margin: 0 .5rem 0 0;"><b-icon icon="chevron-left"></b-icon></button>
+                <button :disabled="!checkedExcludedCometCourses.length" @click.prevent="includeCourse" class="button is-primary is-link" style="margin: 0 0 1rem 0;"><b-icon icon="chevron-right"></b-icon></button><br/>
                 <button @click.prevent="submit" class="button is-primary is-link" style="margin: 0 0 1rem 0;">Submit</button><br>
                 <b-tooltip label="Automatically include translated versions of selected courses."
                     position="is-bottom">
@@ -234,11 +234,11 @@ import axios from 'axios'
                     this.checkedExcludedCometCourses.forEach(c => {
                         if(c.language === 'english') {
                             let frenchCourse = this.cometCourses.filter(course => course.english_version_id === c.id)[0]
-                            if(!frenchCourse.include_in_catalog)
+                            if(frenchCourse && !frenchCourse.include_in_catalog)
                                 this.checkedExcludedCometCourses.push(frenchCourse)
                         } else if (c.language === 'french') {
                             let englishCourse = this.cometCourses.filter(x => x.id === c.english_version_id)[0]
-                            if(!englishCourse.include_in_catalog)
+                            if(englishCourse && !englishCourse.include_in_catalog)
                                 this.checkedExcludedCometCourses.push(englishCourse)
                         }
                     })
@@ -262,11 +262,11 @@ import axios from 'axios'
                     this.checkedIncludedCometCourses.forEach(c => {
                         if(c.language === 'english') {
                             let frenchCourse = this.cometCourses.filter(course => course.english_version_id === c.id)[0]
-                            if(frenchCourse.include_in_catalog)
+                            if(frenchCourse && frenchCourse.include_in_catalog)
                                 this.checkedIncludedCometCourses.push(frenchCourse)
                         } else if (c.language === 'french') {
                             let englishCourse = this.cometCourses.filter(x => x.id === c.english_version_id)[0]
-                            if(englishCourse.include_in_catalog)
+                            if(englishCourse && englishCourse.include_in_catalog)
                                 this.checkedIncludedCometCourses.push(englishCourse)
                         }
                     })
