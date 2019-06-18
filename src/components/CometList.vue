@@ -2,80 +2,88 @@
     <section>
         <div class="columns">
             <div class="column" style="margin: 0 1rem 0 1rem">
-                <h2 class="title">Excluded COMET Modules</h2>
+                <b-tabs position="is-centered" class="block">
+                    <b-tab-item label="Training Portal">
+                        
+                    </b-tab-item>
+                    <b-tab-item label="COMET">
+                        <h2 class="title">Excluded COMET Modules</h2>
 
-                <b-field>
-                    <b-input icon="magnify"
-                        @keyup.native.esc="excludedSearchTerm = ''"
-                        placeholder="Search..."
-                        id="searchExcludedCometCourses"
-                        autofocus
-                        v-model="excludedSearchTerm"
-                        style="margin-right: .5rem;"></b-input>
-                    <b-checkbox v-model="excludedCourseLangGroup"
-                        native-value="english">
-                        <span>Show English</span>
-                    </b-checkbox>
+                        <b-field>
+                            <b-input icon="magnify"
+                                @keyup.native.esc="excludedSearchTerm = ''"
+                                placeholder="Search..."
+                                id="searchExcludedCometCourses"
+                                autofocus
+                                v-model="excludedSearchTerm"
+                                style="margin-right: .5rem;"></b-input>
+                            <b-checkbox v-model="excludedCourseLangGroup"
+                                native-value="english">
+                                <span>Show English</span>
+                            </b-checkbox>
 
-                    <b-checkbox v-model="excludedCourseLangGroup"
-                        native-value="french">
-                        <span>Show French</span>
-                    </b-checkbox>
-                </b-field>
+                            <b-checkbox v-model="excludedCourseLangGroup"
+                                native-value="french">
+                                <span>Show French</span>
+                            </b-checkbox>
+                        </b-field>
 
-                <b-table
-                :header-checkable="false"
-                :data="excludedCometCourses"
-                checkable
-                :checked-rows.sync="checkedExcludedCometCourses"
-                ref="table"
-                paginated
-                per-page="8"
-                :opened-detailed="defaultOpenedDetails"
-                detailed
-                detail-key="id"
-                :show-detail-icon="showDetailIcon"
-                aria-next-label="Next page"
-                aria-previous-label="Previous page"
-                aria-page-label="Page"
-                aria-current-label="Current page">
+                        <b-table
+                        :header-checkable="false"
+                        :data="excludedCometCourses"
+                        checkable
+                        :checked-rows.sync="checkedExcludedCometCourses"
+                        ref="table"
+                        paginated
+                        per-page="10"
+                        :opened-detailed="defaultOpenedDetails"
+                        detailed
+                        detail-key="id"
+                        :show-detail-icon="showDetailIcon"
+                        aria-next-label="Next page"
+                        aria-previous-label="Previous page"
+                        aria-page-label="Page"
+                        aria-current-label="Current page">
 
-                    <template slot="empty">
-                        (No data)
-                    </template>
+                            <template slot="empty">
+                                (No data)
+                            </template>
 
-                    <template slot-scope="props">
-                        <b-table-column field="title" label="Title">
-                            {{ props.row.title }}
-                        </b-table-column>
-                    </template>
+                            <template slot-scope="props">
+                                <b-table-column field="title" label="Title">
+                                    {{ props.row.title }}
+                                </b-table-column>
+                            </template>
 
-                    <template slot="detail" slot-scope="props">
-                        <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-96x96">
-                                    <img :src="props.row.image_src">
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p>
-                                        <strong><a :href="props.row.url">{{ props.row.title }}</a></strong>
-                                        <br>
-                                        {{ props.row.description }}
-                                    </p>
-                                </div>
-                            </div>
-                        </article>
-                    </template>
+                            <template slot="detail" slot-scope="props">
+                                <article class="media">
+                                    <figure class="media-left">
+                                        <p class="image is-96x96">
+                                            <img :src="props.row.image_src">
+                                        </p>
+                                    </figure>
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p>
+                                                <strong><a :href="props.row.url">{{ props.row.title }}</a></strong>
+                                                <br>
+                                                {{ props.row.description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+                            </template>
 
-                </b-table>
+                        </b-table>
+                    </b-tab-item>
+                </b-tabs>
+                
             </div>
 
             <div class="column is-narrow">
                 <button :disabled="!checkedIncludedCometCourses.length" @click.prevent="excludeCourse" class="button is-primary is-link" style="margin: 0 .5rem 0 0;"><b-icon icon="chevron-left"></b-icon></button>
                 <button :disabled="!checkedExcludedCometCourses.length" @click.prevent="includeCourse" class="button is-primary is-link" style="margin: 0 0 1rem 0;"><b-icon icon="chevron-right"></b-icon></button><br/>
-                <button @click.prevent="submit" class="button is-primary is-link" style="margin: 0 0 1rem 0;">Submit</button><br>
+                <button @click.prevent="submit" class="button is-primary is-link" style="margin: 0 0 1rem 0;">Save</button><br>
                 <b-tooltip label="Automatically include translated versions of selected courses."
                     position="is-bottom">
                     <b-switch v-model="addOtherLang" style="margin: 0 0 0 .5rem;"></b-switch>
@@ -112,7 +120,7 @@
                 :checked-rows.sync="checkedIncludedCometCourses"
                 ref="table"
                 paginated
-                per-page="8"
+                per-page="10"
                 :opened-detailed="defaultOpenedDetails"
                 detailed
                 detail-key="id"
@@ -191,7 +199,8 @@ import axios from 'axios'
                 .filter(row => row.title
                     .toString()
                     .toLowerCase()
-                    .includes(this.includedSearchTerm)
+                    .indexOf(this.includedSearchTerm) >= 0 ||
+                    row.title === this.includedSearchTerm
                 )
             },
             excludedCometCourses: function () {
@@ -208,7 +217,8 @@ import axios from 'axios'
                 .filter(row => row.title
                     .toString()
                     .toLowerCase()
-                    .includes(this.excludedSearchTerm)
+                    .indexOf(this.excludedSearchTerm) >= 0 ||
+                    row.title === this.excludedSearchTerm
                 )
             }
         },
