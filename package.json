@@ -7,7 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "buefy": "^0.7.7",
     "bulma-checkradio": "^1.1.0",
     "cool-checkboxes-for-bulma.io": "^1.1.0",
